@@ -12,7 +12,7 @@ import (
 type OpenShowVar struct {
 	TCP_IP   string
 	TCP_PORT int
-	conn     net.Conn
+	Conn     net.Conn
 }
 
 // NewOpenShowVar creates a new instance of OpenShowVar.
@@ -39,7 +39,7 @@ func (osv *OpenShowVar) Connect() error {
 		return fmt.Errorf("connection error: %v", err)
 	}
 	// Save the connection
-	osv.conn = conn
+	osv.Conn = conn
 	return nil
 }
 
@@ -94,19 +94,19 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 	fmt.Printf("Sent request: %x\n", request)
 
 	// Ensure the connection is established
-	if osv.conn == nil {
+	if osv.Conn == nil {
 		return nil, errors.New("not connected to server")
 	}
 
 	// Send the request
-	_, err := osv.conn.Write(request)
+	_, err := osv.Conn.Write(request)
 	if err != nil {
 		return nil, fmt.Errorf("failed to send request: %v", err)
 	}
 
 	// Read the response
 	response := make([]byte, 1024)
-	n, err := osv.conn.Read(response)
+	n, err := osv.Conn.Read(response)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
 	}
@@ -205,8 +205,8 @@ func (osv *OpenShowVar) Write(varname string, val string) (string, error) {
 // Disconnect terminates the TCP connection.
 func (osv *OpenShowVar) Disconnect() {
 	// Close the connection if it exists
-	if osv.conn != nil {
-		osv.conn.Close()
-		osv.conn = nil
+	if osv.Conn != nil {
+		osv.Conn.Close()
+		osv.Conn = nil
 	}
 }
