@@ -16,9 +16,9 @@ import (
 // Instead of a real server, a simulated server is created for use in tests.
 // Details of the server implementation are not covered here.
 func startMockServer() (net.Listener, chan bool) {
-	// Bind a TCP listener to a random port on localhost
+	// Bind a TCP listener to a random port on localhost.
 	listener, _ := net.Listen("tcp", "127.0.0.1:0")
-	// Create a channel to signal when to stop the server
+	// Create a channel to signal when to stop the server.
 	stop := make(chan bool)
 
 	go func() {
@@ -35,7 +35,7 @@ func startMockServer() (net.Listener, chan bool) {
 					defer conn.Close()
 					buf := make([]byte, 1024)
 					n, _ := conn.Read(buf)
-					// Process the request and send back the appropriate response
+					// Process the request and send back the appropriate response.
 					response := processRequest(buf[:n])
 					conn.Write(response)
 				}(conn)
@@ -52,12 +52,18 @@ func startMockServer() (net.Listener, chan bool) {
 // the appropriate response. In this implementation, the request is simply echoed back.
 func processRequest(request []byte) []byte {
 	// Here we should process the request and generate the appropriate response.
+	// Check the length of the incoming data.
+	if len(request) < 7 {
+		// Return an error if the length is not sufficient.
+		return []byte("invalid data length")
+	}
+
 	// For simplicity, we will just echo back the request.
 	response := request
 
-	// Modify the response to match the expected behavior in tests
+	// Modify the response to match the expected behavior in tests.
 	if request[4] == 1 {
-		// For write requests, echo only the value part with the necessary header
+		// For write requests, echo only the value part with the necessary header.
 		varNameLen := int(request[5])<<8 | int(request[6])
 		valLen := int(request[7+varNameLen])<<8 | int(request[7+varNameLen+1])
 		response = append(
@@ -75,26 +81,26 @@ func TestConnect(t *testing.T) {
 	defer close(stop)
 	addr := listener.Addr().(*net.TCPAddr)
 
-	// Create an `OpenShowVar` instance and connect to the mock server
+	// Create an `OpenShowVar` instance and connect to the mock server.
 	osv := openshowvar.NewOpenShowVar(addr.IP.String(), addr.Port)
 	err := osv.Connect()
 	assert.NoError(t, err)
-	// Check if connection is established
+	// Check if connection is established.
 	assert.NotNil(t, osv.Conn)
 }
 
 // Tests the `Send` method of the `OpenShowVar` struct.
 func TestSend(t *testing.T) {
-	// Start a mock server
+	// Start a mock server.
 	listener, stop := startMockServer()
 	defer close(stop)
 	addr := listener.Addr().(*net.TCPAddr)
 
-	// Create an `OpenShowVar` instance and connect to the mock server
+	// Create an `OpenShowVar` instance and connect to the mock server.
 	osv := openshowvar.NewOpenShowVar(addr.IP.String(), addr.Port)
 	osv.Connect()
 
-	// Test sending data to the mock server
+	// Test sending data to the mock server.
 	response, err := osv.Send("existing_var", "new_value")
 	assert.NoError(t, err)
 	assert.NotNil(t, response)
@@ -102,16 +108,16 @@ func TestSend(t *testing.T) {
 
 // Tests the `Read` method of the `OpenShowVar` struct.
 func TestRead(t *testing.T) {
-	// Start a mock server
+	// Start a mock server.
 	listener, stop := startMockServer()
 	defer close(stop)
 	addr := listener.Addr().(*net.TCPAddr)
 
-	// Create an `OpenShowVar` instance and connect to the mock server
+	// Create an `OpenShowVar` instance and connect to the mock server.
 	osv := openshowvar.NewOpenShowVar(addr.IP.String(), addr.Port)
 	osv.Connect()
 
-	// Test reading data from the mock server
+	// Test reading data from the mock server.
 	response, err := osv.Read("existing_var")
 	assert.NoError(t, err)
 	assert.Equal(t, "existing_var", response)
@@ -119,16 +125,16 @@ func TestRead(t *testing.T) {
 
 // Tests the `Write` method of the `OpenShowVar` struct.
 func TestWrite(t *testing.T) {
-	// Start a mock server
+	// Start a mock server.
 	listener, stop := startMockServer()
 	defer close(stop)
 	addr := listener.Addr().(*net.TCPAddr)
 
-	// Create an `OpenShowVar` instance and connect to the mock server
+	// Create an `OpenShowVar` instance and connect to the mock server.
 	osv := openshowvar.NewOpenShowVar(addr.IP.String(), addr.Port)
 	osv.Connect()
 
-	// Test writing data to the mock server
+	// Test writing data to the mock server.
 	response, err := osv.Write("existing_var", "test_val")
 	assert.NoError(t, err)
 	assert.Equal(t, "test_val", response)
@@ -141,12 +147,12 @@ func TestDisconnect(t *testing.T) {
 	defer close(stop)
 	addr := listener.Addr().(*net.TCPAddr)
 
-	// Create an `OpenShowVar` instance and connect to the mock server
+	// Create an `OpenShowVar` instance and connect to the mock server.
 	osv := openshowvar.NewOpenShowVar(addr.IP.String(), addr.Port)
 	osv.Connect()
-	// Disconnect from the mock server
+	// Disconnect from the mock server.
 	osv.Disconnect()
 
-	// Check if connection is closed
+	// Check if connection is closed.
 	assert.Nil(t, osv.Conn)
 }

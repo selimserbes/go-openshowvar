@@ -91,7 +91,7 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 	// Complete request to be sent
 	request := append(header, msg...)
 
-	fmt.Printf("Sent request: %x\n", request)
+	// fmt.Printf("Sent request: %x\n", request)
 
 	// Ensure the connection is established
 	if osv.Conn == nil {
@@ -113,7 +113,7 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 
 	// Trim the response to the actual data size
 	response = response[:n]
-	fmt.Printf("Received response: %x\n", response)
+	// fmt.Printf("Received response: %x\n", response)
 
 	// Filter visible characters from the response
 	visibleChars := make([]byte, 0)
