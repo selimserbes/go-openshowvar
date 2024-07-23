@@ -4,8 +4,7 @@ import (
 	"net"
 	"testing"
 
-	"github.com/selimserbes/go-openshowvar/openshowvar"
-
+	"github.com/selimserbes/go-openshowvar/pkg/openshowvar"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -135,9 +134,9 @@ func TestWrite(t *testing.T) {
 	osv.Connect()
 
 	// Test writing data to the mock server.
-	response, err := osv.Write("existing_var", "test_val")
+	response, err := osv.Write("existing_var", "new_value")
 	assert.NoError(t, err)
-	assert.Equal(t, "test_val", response)
+	assert.Equal(t, "new_value", response)
 }
 
 // Tests the `Disconnect` method of the `OpenShowVar` struct.

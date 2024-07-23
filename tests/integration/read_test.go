@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/selimserbes/go-openshowvar/openshowvar"
+	"github.com/selimserbes/go-openshowvar/pkg/openshowvar"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,14 +14,14 @@ import (
 
 // Test reading a variable successfully.
 func TestReadSuccess(t *testing.T) {
-	// Creating an instance of OpenShowVar with a valid IP address and port
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Creating an instance of OpenShowVar with a valid IP address and port.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 
-	// Attempting to connect to OpenShowVar server
+	// Attempting to connect to OpenShowVar server.
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// Successfully read a variable
+	// Successfully read a variable.
 	result, err := osv.Read("existing_var")
 	assert.NoError(t, err)
 	assert.NotEmpty(t, result)
@@ -29,14 +29,14 @@ func TestReadSuccess(t *testing.T) {
 
 // Test attempting to read a variable with an empty name.
 func TestReadEmptyVariableName(t *testing.T) {
-	// Creating an instance of OpenShowVar with a valid IP address and port
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Creating an instance of OpenShowVar with a valid IP address and port.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 
-	// Attempting to connect to OpenShowVar server
+	// Attempting to connect to OpenShowVar server.
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// An error should be returned when attempting to read a variable with an empty name
+	// An error should be returned when attempting to read a variable with an empty name.
 	result, err := osv.Read("")
 	assert.Error(t, err)
 	assert.Empty(t, result)
@@ -44,14 +44,14 @@ func TestReadEmptyVariableName(t *testing.T) {
 
 // Test attempting to read a non-existent variable.
 func TestReadVariableNotFound(t *testing.T) {
-	// Creating an instance of OpenShowVar with a valid IP address and port
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Creating an instance of OpenShowVar with a valid IP address and port.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 
-	// Attempting to connect to OpenShowVar server
+	// Attempting to connect to OpenShowVar server.
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// An error should be returned when attempting to read a variable that does not exist
+	// An error should be returned when attempting to read a variable that does not exist.
 	result, err := osv.Read("non_existing_var")
 	assert.Error(t, err)
 	assert.Empty(t, result)

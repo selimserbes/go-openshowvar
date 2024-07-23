@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/selimserbes/go-openshowvar/openshowvar"
+	"github.com/selimserbes/go-openshowvar/pkg/openshowvar"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,8 +14,8 @@ import (
 
 // Test writing a value to a variable successfully.
 func TestWriteSuccess(t *testing.T) {
-	// Establishing a connection to OpenShowVar
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Establishing a connection to OpenShowVar.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err := osv.Connect()
 	assert.NoError(t, err)
 
@@ -26,36 +26,36 @@ func TestWriteSuccess(t *testing.T) {
 
 // Test attempting to write to a variable with an empty name.
 func TestWriteEmptyVariableName(t *testing.T) {
-	// Establishing a connection to OpenShowVar
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Establishing a connection to OpenShowVar.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// An error should be returned when attempting to write to a variable with an empty name
+	// An error should be returned when attempting to write to a variable with an empty name.
 	_, err = osv.Write("", "new_value")
 	assert.Error(t, err)
 }
 
 // Test attempting to write an empty value to a variable.
 func TestWriteEmptyValue(t *testing.T) {
-	// Establishing a connection to OpenShowVar
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Establishing a connection to OpenShowVar.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// An error should be returned when attempting to write an empty value
+	// An error should be returned when attempting to write an empty value.
 	_, err = osv.Write("existing_var", "")
 	assert.Error(t, err)
 }
 
 // Test attempting to write a value to a non-existent variable.
 func TestWriteVariableNotFound(t *testing.T) {
-	// Establishing a connection to OpenShowVar
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Establishing a connection to OpenShowVar.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// An error should be returned when attempting to write a value to a variable that does not exist
+	// An error should be returned when attempting to write a value to a variable that does not exist.
 	_, err = osv.Write("non_existing_var", "new_value")
 	assert.Error(t, err)
 }

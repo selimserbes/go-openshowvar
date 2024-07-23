@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/selimserbes/go-openshowvar/openshowvar"
+	"github.com/selimserbes/go-openshowvar/pkg/openshowvar"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,27 +15,27 @@ import (
 // Connects to the OpenShowVar server with a valid IP address and port,
 // then checks if the connection is successful.
 func TestConnectSuccess(t *testing.T) {
-	// Creating an instance of OpenShowVar with a valid IP address and port
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Creating an instance of OpenShowVar with a valid IP address and port.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 
-	// The connection attempt should be successful
+	// The connection attempt should be successful.
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// The `conn` field should be non-nil after a successful connection
+	// The `conn` field should be non-nil after a successful connection.
 	assert.NotNil(t, osv.Conn)
 }
 
 // Tries to connect to the OpenShowVar server with an invalid IP address,
 // then verifies that the connection attempt fails.
 func TestConnectFailure(t *testing.T) {
-	// Creating an instance of OpenShowVar with an invalid IP address and port
+	// Creating an instance of OpenShowVar with an invalid IP address and port.
 	osv := openshowvar.NewOpenShowVar("invalid_ip", 7000)
 
-	// The connection attempt should fail
+	// The connection attempt should fail.
 	err := osv.Connect()
 	assert.Error(t, err)
 
-	// The `conn` field should be nil after a failed connection attempt
+	// The `conn` field should be nil after a failed connection attempt.
 	assert.Nil(t, osv.Conn)
 }

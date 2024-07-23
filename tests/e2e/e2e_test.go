@@ -3,9 +3,8 @@ package openshowvar
 import (
 	"strconv"
 	"testing"
-	"time"
 
-	"github.com/selimserbes/go-openshowvar/openshowvar"
+	"github.com/selimserbes/go-openshowvar/pkg/openshowvar"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,20 +19,17 @@ import (
 // then reads the same variable to ensure the value matches the written one.
 func TestWriteAndReadWithRealRobot(t *testing.T) {
 	// Establishing a connection to OpenShowVar.
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err := osv.Connect()
 	assert.NoError(t, err, "Connection failed")
 
 	// Defining the value to be written and the variable name.
-	value := "2"
-	variableName := "COUNT"
+	value := "new_value"
+	variableName := "existing_var"
 
 	// Performing the variable writing operation.
 	_, err = osv.Write(variableName, value)
 	assert.NoError(t, err, "Variable writing failed")
-
-	// Waiting for the value to propagate.
-	time.Sleep(1 * time.Second)
 
 	// Performing the variable reading operation.
 	readValue, err := osv.Read(variableName)
@@ -55,7 +51,7 @@ func TestOpenShowVarErrorHandling(t *testing.T) {
 	assert.Error(t, err, "Successful connection with an invalid IP address")
 
 	// Testing reading a non-existent variable.
-	osv = openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	osv = openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err = osv.Connect()
 	assert.NoError(t, err)
 

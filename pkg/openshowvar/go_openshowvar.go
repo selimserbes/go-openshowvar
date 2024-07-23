@@ -54,7 +54,7 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 	var msg []byte
 	temp := make([]byte, 0)
 
-	// If value is provided, prepare the message for writing
+	// If value is provided, prepare the message for writing.
 	if val != "" {
 		valLen := len(val)
 		msg = append(msg, byte((valLen&0xff00)>>8)) // MSB of value length
@@ -62,7 +62,7 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 		msg = append(msg, []byte(val)...)           // Value in ASCII
 	}
 
-	// Prepare the message with the variable name
+	// Prepare the message with the variable name.
 	if len(varname) > 0 {
 		varNameLen := len(varname)
 		temp = append(temp, byte(varNameLen>>8))     // MSB of variable name length
@@ -70,52 +70,52 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 		temp = append(temp, []byte(varname)...)      // Variable name in ASCII
 	}
 
-	// Determine if the operation is a read or write
+	// Determine if the operation is a read or write.
 	if val != "" {
 		temp = append([]byte{1}, temp...) // Write operation
 	} else {
 		temp = append([]byte{0}, temp...) // Read operation
 	}
 
-	// Combine variable name and value parts into final message
+	// Combine variable name and value parts into final message.
 	msg = append(temp, msg...)
 
-	// Create the message header
+	// Create the message header.
 	var msgLen uint16 = uint16(len(msg))
 	header := make([]byte, 4)
 
-	// Message ID is set to 0, followed by message length
+	// Message ID is set to 0, followed by message length.
 	binary.BigEndian.PutUint16(header[0:2], 0)
 	binary.BigEndian.PutUint16(header[2:4], msgLen)
 
-	// Complete request to be sent
+	// Complete request to be sent.
 	request := append(header, msg...)
 
 	// fmt.Printf("Sent request: %x\n", request)
 
-	// Ensure the connection is established
+	// Ensure the connection is established.
 	if osv.Conn == nil {
 		return nil, errors.New("not connected to server")
 	}
 
-	// Send the request
+	// Send the request.
 	_, err := osv.Conn.Write(request)
 	if err != nil {
 		return nil, fmt.Errorf("failed to send request: %v", err)
 	}
 
-	// Read the response
+	// Read the response.
 	response := make([]byte, 1024)
 	n, err := osv.Conn.Read(response)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
 	}
 
-	// Trim the response to the actual data size
+	// Trim the response to the actual data size.
 	response = response[:n]
 	// fmt.Printf("Received response: %x\n", response)
 
-	// Filter visible characters from the response
+	// Filter visible characters from the response.
 	visibleChars := make([]byte, 0)
 	for _, b := range response {
 		if b >= 32 && b <= 126 {
@@ -137,29 +137,29 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 //
 // Returns: The value of the variable as a string or an error.
 func (osv *OpenShowVar) Read(varname string) (string, error) {
-	// Check if the variable name is provided
+	// Check if the variable name is provided.
 	if varname == "" {
 		return "", errors.New("empty variable name")
 	}
 
-	// Send a request to read the variable
+	// Send a request to read the variable.
 	response, err := osv.Send(varname, "")
 	if err != nil {
 		return "", err
 	}
 
-	// Ensure the response has a valid length
+	// Ensure the response has a valid length.
 	if len(response) < 7 {
 		return "", errors.New("invalid response length")
 	}
 
-	// Extract the length of the variable value
+	// Extract the length of the variable value.
 	valLen := binary.BigEndian.Uint16(response[5:7])
 	if len(response) < int(7+valLen) {
 		return "", errors.New("response length does not match value length")
 	}
 
-	// Extract and return the variable value
+	// Extract and return the variable value.
 	varValue := string(response[7 : 7+valLen])
 	return varValue, nil
 }
@@ -172,7 +172,7 @@ func (osv *OpenShowVar) Read(varname string) (string, error) {
 //
 // Returns: The written value as a string or an error.
 func (osv *OpenShowVar) Write(varname string, val string) (string, error) {
-	// Check if the variable name and value are provided
+	// Check if the variable name and value are provided.
 	if varname == "" {
 		return "", errors.New("empty variable name")
 	}
@@ -180,31 +180,31 @@ func (osv *OpenShowVar) Write(varname string, val string) (string, error) {
 		return "", errors.New("empty value")
 	}
 
-	// Send a request to write the variable
+	// Send a request to write the variable.
 	response, err := osv.Send(varname, val)
 	if err != nil {
 		return "", err
 	}
 
-	// Ensure the response has a valid length
+	// Ensure the response has a valid length.
 	if len(response) < 7 {
 		return "", errors.New("invalid response length")
 	}
 
-	// Extract the length of the variable value
+	// Extract the length of the variable value.
 	valLen := binary.BigEndian.Uint16(response[5:7])
 	if len(response) < int(7+valLen) {
 		return "", errors.New("response length does not match value length")
 	}
 
-	// Extract and return the written variable value
+	// Extract and return the written variable value.
 	varValue := string(response[7 : 7+valLen])
 	return varValue, nil
 }
 
 // Disconnect terminates the TCP connection.
 func (osv *OpenShowVar) Disconnect() {
-	// Close the connection if it exists
+	// Close the connection if it exists.
 	if osv.Conn != nil {
 		osv.Conn.Close()
 		osv.Conn = nil

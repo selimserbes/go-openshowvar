@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/selimserbes/go-openshowvar/openshowvar"
+	"github.com/selimserbes/go-openshowvar/pkg/openshowvar"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,14 +15,14 @@ import (
 // Tests the disconnection functionality by connecting to an OpenShowVar server,
 // then disconnecting and verifying that the connection has been closed.
 func TestDisconnect(t *testing.T) {
-	// Establishing a connection to OpenShowVar
-	osv := openshowvar.NewOpenShowVar("10.145.173.160", 7000)
+	// Establishing a connection to OpenShowVar.
+	osv := openshowvar.NewOpenShowVar("192.168.1.10", 7000)
 	err := osv.Connect()
 	assert.NoError(t, err)
 
-	// Disconnecting from OpenShowVar
+	// Disconnecting from OpenShowVar.
 	osv.Disconnect()
 
-	// Verifying that the connection has been successfully closed and is now set to nil
+	// Verifying that the connection has been successfully closed and is now set to nil.
 	assert.Nil(t, osv.Conn)
 }
