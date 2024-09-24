@@ -30,14 +30,9 @@ The communication with KukaVarProxy follows this message format:
 
 To install the `go-openshowvar` library, use the following command:
 
-- **On Linux/macOS**:
+- **On Linux/macOS/Windows**:
   Open your terminal and execute:
-  ```sh
-  go get github.com/selimserbes/go-openshowvar@latest
-  ```
-- **On Windows**:
-  Open Command Prompt (cmd) or PowerShell and execute:
-  ```cmd
+  ```terminal
   go get github.com/selimserbes/go-openshowvar@latest
   ```
 
