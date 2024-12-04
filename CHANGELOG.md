@@ -17,3 +17,9 @@
 ### Added
 
 - Introduced `IsConnected` method to the `OpenShowVar` struct, which allows checking if the connection to the server is active.
+
+## [1.0.1] - 2024-12-05
+
+### Update
+
+- Changed the method name `IsConnect` to `IsConnected` in the OpenShowVar library for consistency and clarity.
