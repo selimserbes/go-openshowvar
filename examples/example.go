@@ -18,6 +18,11 @@ func main() {
 	}
 	defer osv.Disconnect()
 
+	// Check if there's a connection.
+	if osv.IsConnect() {
+		fmt.Println("Successfully connected!")
+	}
+
 	// Defining the value to be written and the variable name.
 	varName := "existing_var"
 	newValue := "new_value"

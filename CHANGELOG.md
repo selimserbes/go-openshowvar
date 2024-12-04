@@ -11,3 +11,9 @@
 
 - Integrated GitHub Actions CI workflow to automatically run unit tests on every push and pull request to the `main` branch.
 - Enhanced continuous integration by ensuring code quality through automated testing.
+
+## [1.0.0] - 2024-12-04
+
+### Added
+
+- Introduced `IsConnect` method to the `OpenShowVar` struct, which allows checking if the connection to the server is active.
