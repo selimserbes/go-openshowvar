@@ -88,8 +88,8 @@ func TestConnect(t *testing.T) {
 	assert.NotNil(t, osv.Conn)
 }
 
-// Tests the `IsConnect` method of the `OpenShowVar` struct.
-func TestIsConnect(t *testing.T) {
+// Tests the `IsConnected` method of the `OpenShowVar` struct.
+func TestIsConnected(t *testing.T) {
 	// Start a mock server
 	listener, stop := startMockServer()
 	defer close(stop)
@@ -99,18 +99,18 @@ func TestIsConnect(t *testing.T) {
 	osv := openshowvar.NewOpenShowVar(addr.IP.String(), addr.Port)
 
 	// Initially, there should be no connection.
-	assert.False(t, osv.IsConnect(), "Expected no connection initially.")
+	assert.False(t, osv.IsConnected(), "Expected no connection initially.")
 
 	// Connect to the mock server.
 	err := osv.Connect()
 	assert.NoError(t, err, "Failed to connect.")
 
-	// After connecting, isConnect should return true.
-	assert.True(t, osv.IsConnect(), "Expected connection to be established.")
+	// After connecting, IsConnected should return true.
+	assert.True(t, osv.IsConnected(), "Expected connection to be established.")
 
 	// Disconnect and check again.
 	osv.Disconnect()
-	assert.False(t, osv.IsConnect(), "Expected no connection after disconnect.")
+	assert.False(t, osv.IsConnected(), "Expected no connection after disconnect.")
 }
 
 // Tests the `Send` method of the `OpenShowVar` struct.

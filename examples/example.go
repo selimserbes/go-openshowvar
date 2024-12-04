@@ -19,7 +19,7 @@ func main() {
 	defer osv.Disconnect()
 
 	// Check if there's a connection.
-	if osv.IsConnect() {
+	if osv.IsConnected() {
 		fmt.Println("Successfully connected!")
 	}
 

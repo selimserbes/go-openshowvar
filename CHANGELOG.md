@@ -16,4 +16,4 @@
 
 ### Added
 
-- Introduced `IsConnect` method to the `OpenShowVar` struct, which allows checking if the connection to the server is active.
+- Introduced `IsConnected` method to the `OpenShowVar` struct, which allows checking if the connection to the server is active.
