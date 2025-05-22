@@ -26,7 +26,7 @@
 
 ## [1.0.2] - 2025-05-22
 
-### Update
+### Added
 
 - Added connection timeout in `Connect()` method to limit the duration of establishing TCP connection.
 - Added read/write timeouts in `Send()` method to prevent indefinite blocking during TCP operations in the OpenShowVar library.
