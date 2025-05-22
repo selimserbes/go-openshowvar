@@ -112,7 +112,7 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 		return nil, errors.New("not connected to server")
 	}
 
-	// Set a 2-second timeout for reading from the connection
+	// Set a 2-second timeout for writing from the connection
 	osv.Conn.SetWriteDeadline(time.Now().Add(2 * time.Second))
 
 	// Send the request.
