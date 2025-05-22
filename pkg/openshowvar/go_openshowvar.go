@@ -42,8 +42,10 @@ func (osv *OpenShowVar) Connect() error {
 	// Save the connection
 	osv.Conn = conn
 
-	// Set a 5-second timeout for reading from the connection.
+	// Set a 5-second timeout for both reading and writing on the connection.
 	osv.Conn.SetWriteDeadline(time.Now().Add(5 * time.Second))
+	osv.Conn.SetReadDeadline(time.Now().Add(5 * time.Second))
+
 	return nil
 }
 
@@ -123,7 +125,7 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 	response := make([]byte, 1024)
 
 	// Set a 2-second timeout for reading from the connection.
-	osv.Conn.SetWriteDeadline(time.Now().Add(2 * time.Second))
+	osv.Conn.SetReadDeadline(time.Now().Add(2 * time.Second))
 
 	n, err := osv.Conn.Read(response)
 	if err != nil {
