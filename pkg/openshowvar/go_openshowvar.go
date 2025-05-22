@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"strconv"
+	"time"
 )
 
 // OpenShowVar struct is used to connect to a robot control system and read/write variable values over a TCP connection.
@@ -40,6 +41,9 @@ func (osv *OpenShowVar) Connect() error {
 	}
 	// Save the connection
 	osv.Conn = conn
+
+	// Set a 5-second timeout for reading from the connection.
+	osv.Conn.SetWriteDeadline(time.Now().Add(5 * time.Second))
 	return nil
 }
 
@@ -106,6 +110,9 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 		return nil, errors.New("not connected to server")
 	}
 
+	// Set a 2-second timeout for reading from the connection.
+	osv.Conn.SetWriteDeadline(time.Now().Add(2 * time.Second))
+
 	// Send the request.
 	_, err := osv.Conn.Write(request)
 	if err != nil {
@@ -114,6 +121,10 @@ func (osv *OpenShowVar) Send(varname string, val string) ([]byte, error) {
 
 	// Read the response.
 	response := make([]byte, 1024)
+
+	// Set a 2-second timeout for reading from the connection.
+	osv.Conn.SetWriteDeadline(time.Now().Add(2 * time.Second))
+
 	n, err := osv.Conn.Read(response)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read response: %v", err)
