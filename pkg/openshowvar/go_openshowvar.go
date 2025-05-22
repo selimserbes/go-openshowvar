@@ -53,7 +53,7 @@ func (osv *OpenShowVar) Connect() error {
 //
 // Returns: true if there is an active connection, otherwise false.
 func (osv *OpenShowVar) IsConnected() bool {
-	// Return true if the connection exists and is open, otherwise false.
+	// Return true if the connection exists and is open, otherwise false
 	return osv.Conn != nil
 }
 
